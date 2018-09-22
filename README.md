@@ -15,7 +15,7 @@
 
 ### 프로젝트 디렉토리 구조
 <pre>
- Fin2B_SW_RnD_Test_C\
+ Fin2B_SW_RnD_Test_C/
  	│  index.js 
 	│  package-lock.json
 	│  package.json
@@ -35,4 +35,22 @@
 	├─views
 	│  │   home.handlebars
   </pre>
+  
 ---
+### 테스트 요구사항들
+>1. 프로젝트 시작부터 git 이용해서 코드를 관리
+
+>2. readme.md 파일 관리
+
+>3. nodejs,expressjs,handlebars(server),bootstrap이용하기.
+
+>4. 2페이지상 화면 만들고 각페이지 상단에 실시간 시계 구현.
+
+>5. 8자이상으로 대문자,소문자,숫자,특수문자가ㅊ 최소 1개씩 꼭 포함.
+
+>6. 구글 검색결과를 화면에 출력하는 폼.
+
+>7. n번째 피보나치수자 출력. 
+
+	
+
