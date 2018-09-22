@@ -1,0 +1,185 @@
+body{
+    margin:0px;
+    padding:0px;
+}
+
+a{
+    margin:0px;
+    padding:0px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar{
+    position:fixed;
+    width:100%;
+    height:60px;
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+    background:black;
+    z-index:10;
+    box-shadow:0px 4px 7px 3px rgba(0,0,0,.5);
+}
+.logo{
+    width:100px;
+    height:25px;
+    margin:20px;
+    border:1px solid red;
+    border-radius:5px;
+}
+.timer{
+    margin:10px;
+    text-shadow: 0px 0px 8px rgba(255,255,255,1)!important;
+    color:red;
+}
+.contact{
+    margin:20px;
+    color:red;
+    text-decoration: none;
+}
+
+.home{
+    position:absolute;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100%;
+    font-size:70px;
+    color:gray;
+    flex-direction: column;
+}
+
+.login{
+    position: fixed;
+    width:100%;
+    top:60px;
+    height:30px;
+    display:flex;
+    flex-direction: row;
+    background: red;
+    z-index:9;
+    justify-content: center;
+    box-shadow:0px 3px 7px 4px rgba(0,0,0,.5);
+}
+.login input{
+    margin:3px;
+    width: 120px;
+    border:2px solid black;
+    border-radius: 5px;
+    text-align:center;
+}
+.login input[type="submit"]{
+    width:60px;
+}
+
+.fibonacciArea{
+    position: fixed;
+    width:100%;
+    top:90px;
+    height:30px;
+    z-index:8;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background: lightgreen;
+    box-shadow:0px 3px 7px 4px rgba(0,0,0,.5);
+}
+
+.fibonacci{
+    width:100px;
+    text-align:center;
+    border-radius: 5px;
+    outline:none;
+    margin:2px 5px;
+    border:2px solid black;
+}
+
+.googleSearchArea{
+    position: fixed;
+    width:100%;
+    top:120px;
+    height:30px;
+    background: lightblue;
+    z-index:7;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow:0px 3px 7px 4px rgba(0,0,0,.5);
+}
+.googleSearchArea input{
+    border-radius: 5px;
+    margin:2px 2px;
+    outline:none;
+    border:2px solid black;
+    text-align: center;
+}
+.googleSearchArea input[type=submit]{
+    background:lightblue;
+    border:2px solid black;
+}
+
+.searchResult{
+    position:absolute;
+    background:yellow;
+    width: 100%;
+    top:150px;
+    min-height:100%;
+    z-index:5;
+    display:flex;
+    flex-direction: column;
+}
+
+.searchResult a{
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.searchResultsInside{
+    margin:10px;
+    padding:10px;
+}
+
+.searchResultsItem{
+    display:flex;
+    margin:20px;
+    flex-direction: column;
+    border: 1px solid red;
+    border-radius: 10px;
+    padding:20px;
+    background:white;
+    box-shadow:0px 0px 8px 4px rgba(0,0,0,.6);
+    word-break:break-word;
+}
+
+.searchResultsItem .title{
+    display:flex;
+    flex-wrap:nowrap;
+}
+
+.displaylink{
+    color:green;
+    font-size:12px;
+}
+
+.searchResultsItem .snippet{
+    font-size:13px;
+}
+
+
+.nextpage{
+    display:flex;
+    margin:0 40px 20px;
+    padding:10px;
+    border: 2px solid red;
+    border-radius: 10px;
+    background:black;
+    box-shadow:0px 0px 8px 4px rgba(0,0,0,.6);
+    color: white;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
