@@ -1,10 +1,12 @@
 let express = require("express");
 let bodyParser = require("body-parser");
 let exphbs  = require('express-handlebars');
+var childProcess = require('child_process');
 
 let app = express();
+let port = 28082;
 
-app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.enable('view cache');//Template Caching
 
@@ -13,8 +15,9 @@ app.use(bodyParser.json({limit:"300kb"}));
 
 app.use(express.static(__dirname + '/public'));
 
-app.listen(8080, function () {
-    console.log('Example app listening on port 8080!');
+app.listen(port, function () {
+    console.log('The Test is running at http://localhost:'+port+'/');
+    childProcess.exec('start http://localhost:'+port);
 });
 
 app.get("/",(req,res,next)=>{
