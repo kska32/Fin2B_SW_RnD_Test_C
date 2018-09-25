@@ -3,9 +3,10 @@
 >1. npm install
 >2. npm start
 ---
-<img width="600" height="600" src="https://github.com/kska32/Fin2B_SW_RnD_Test_C/blob/master/public/images/1.png?raw=true"/>
-<img width="600" height="600" src="https://github.com/kska32/Fin2B_SW_RnD_Test_C/blob/master/public/images/2.png?raw=true"/>
-<img width="600" height="600" src="https://github.com/kska32/Fin2B_SW_RnD_Test_C/blob/master/public/images/3.png?raw=true"/>
+<img width="230" height="400" src="https://github.com/kska32/Fin2B_SW_RnD_Test_C/blob/master/public/images/1.png?raw=true"/>
+
+<img width="230" height="400" src="https://github.com/kska32/Fin2B_SW_RnD_Test_C/blob/master/public/images/2.png?raw=true"/>
+<img width="230" height="400" src="https://github.com/kska32/Fin2B_SW_RnD_Test_C/blob/master/public/images/3.png?raw=true"/>
 >실행하면 브라우저 창구가 자동으로 뜨게 됩니다.<br>
 >보다싶이 페이지는  매우 간단합니다.
 
