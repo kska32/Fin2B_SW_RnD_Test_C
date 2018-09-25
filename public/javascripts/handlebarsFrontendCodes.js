@@ -19,7 +19,7 @@ function handlebarsRender(context){
                 <div class="displaylink" >{{{displayLink}}}</div>
                 <span class="snippet">{{{htmlSnippet}}}</span>
             {{/items}}
-            <button class='nextpage' onclick='nextPage(event,{{json queries}})'>NEXT PAGE</button>
+            <button class='nextpage btn btn-success' onclick='nextPage(event,{{json queries}})'>NEXT PAGE</button>
         `;
 
         let template = Handlebars.compile(source);

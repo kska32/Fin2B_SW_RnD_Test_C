@@ -6,7 +6,7 @@ var childProcess = require('child_process');
 let app = express();
 let port = 28082;
 
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.enable('view cache');//Template Caching
 
@@ -21,11 +21,11 @@ app.listen(port, function () {
 });
 
 app.get("/",(req,res,next)=>{
-    res.render("home",{body:"HOME",timer:Date.now(),form:true});
+    res.render("cover",{timer:Date.now()});
 });
 
-app.get("/contact",(req,res,next)=>{
-    res.render("home",{body:"CONTACT",timer:Date.now()});
+app.get("/main",(req,res,next)=>{
+    res.render("main",{timer:Date.now()});
 });
 
 app.post("/fibonacci",(req,res,next)=>{

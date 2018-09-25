@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>https://absolute.tk/news</title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'></script>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.3.1/css/all.css'>
+
+    <script type="text/javascript" src="/javascripts/handlebars-v4.0.12.js"></script>
+    <script src="/javascripts/handlebarsFrontendCodes.js"></script>
+    <link rel="stylesheet" href="/css/sideMenu.css">
+    <link rel="stylesheet" type="text/css" href="/css/searchResult.css">
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+
+    <script src="/javascripts/resultsJson.js"></script>
+    <style>
+        body{
+            font-family: 'Bree Serif';
+            font-weight:600!important;
+            text-shadow:0px 0px 3px rgba(0,0,0,0.5)!important;
+        } 
+        .darknight{
+            position: fixed;
+            width:100%;
+            height:100%;
+            top: 0%;
+            z-index:20;
+            background:url(images/cover.jpg);
+            background-size:cover;
+            background-position: center;
+        }
+        .darknightCome{
+            top: 0%;
+        }
+        .darknightGone{
+            top:-100%;
+        }
+    </style>
+
+</head>
+<body class="bg-info">
+    <div class="darknight bg-light" style="transition:all 0.5s ease"></div>
+    <div class="container-fluid">
+        <!--- navbar --->
+            <div class="input-group mt-3 mb-3" style="min-width:260px">
+                <button class="btn btn-dark input-group-append mr-3" onclick="showMenu(event)">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <input type="text" class="form-control" id="searchValue" placeholder="Goole Search" onkeyup="searchEnter(event)">
+                <div class="input-group-append" >
+                    <button class="btn btn-dark rounded" onclick="googlesearch(event)" >
+                        <i class="fas fa-search"></i>
+                    </button> 
+                </div>
+            </div> 
+            <div class="searchResult"></div>
+        <!--- menu content -->
+        <div class="menu">
+            <div class="grayZone" style="transition:all 0.3s ease" onclick="closeMenu(event)"></div>
+            <div class="sideMenu" style="transition:all 0.3s ease">
+                <form>
+                    <h5 class="text-center">LOGIN</h5>
+                    <input type="text" class="form-control mb-1 " id="usr" placeholder="Id" value="Anonymous" disabled>
+                    <input type="password" class="form-control mb-1" id="pwd" placeholder="Password">
+                    <input type="submit" class="form-control mb-1 btn btn-dark" id="submit" Value="로그인" onclick="login(event)">
+                </form>
+                <hr>
+                <form>
+                    <div class="fibonacci">
+                        <h5 class="text-center">FIBONACCI</h5>
+                        <input type="text" class="form-control mb-1" id="fibonacciN" placeholder="Fibonacci Nth" oninput="fibonacciAjax(event)">
+                        <input type="text" class="form-control mb-1" id="fibonacciV" placeholder="Fibonacci Value" disabled>
+                    </div>
+                </form>
+                <hr>
+                <input type="button" class="form-control mb-1 btn btn-danger" id="close" value="닫기" onclick="closeMenu(event)">
+                <input type="button" class="btn btn-danger closeSymbol" id="closeSym" value="×" onclick="closeMenu(event)" >
+            </div>
+        </div>
+        <!--- server time--->
+        <!--- <a href="/"> --->
+        <span class="badge badge-danger badge-pill position-fixed" style="bottom:0;right:0;margin:15px" id="timer" data-timer={{timer}}></span>
+        <!--- </a> --->
+        <!--- totop --->
+        <span class="text-dark" id="gotoTop" style="opacity:0;visibility:collapse;font-size:36px;position:fixed;right:5px;bottom:30px;margin:15px;transition:0.5s ease;" onclick="gotoTop(event)">Top</span>
+    </div>
+
+
+    
+</body>
+<script>
+    //like jquery's $(), but it's so simpble and it's not equal $() of jquery.
+    let M = (x)=>document.querySelector(x);
+
+    //********************************************
+    //paging effect
+            window.addEventListener("load",(e)=>{
+                e.preventDefault();
+                M(".darknight").classList.add("darknightGone");
+                //M(".darknight").classList.remove("darknightCome");
+            });
+
+            M("a") && M("a").addEventListener("click",(e)=>{
+                e.preventDefault();
+                M(".darknight").addEventListener("transitionend",(e)=>{
+                    window.location.href="/";
+                })
+
+               // M(".darknight").classList.add("darknightCome");
+                M(".darknight").classList.remove("darknightGone");
+                
+            })
+
+
+    //*********************************************
+
+    //my Ajax method.
+    function myAjax(method="POST", url="", data={}, callback=(xhr)=>{}) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                callback(this);
+            }
+        };
+        method = method.toLowerCase();
+        xhr.open(method, url, true);
+        method==="post" && xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(method==="post"?JSON.stringify(data):null);
+    }
+
+    //for control side menu. 
+    //..
+    function closeMenu(e){
+        M(".grayZone").classList.remove("grayZoneShow");
+        M(".sideMenu").classList.remove("sideMenuShow");
+    }
+
+    function showMenu(e){
+        M(".grayZone").classList.add("grayZoneShow");
+        M(".sideMenu").classList.add("sideMenuShow");
+    }
+    //
+
+    //server time:
+    //----------------------------
+    let serverTime = M("#timer").dataset.timer;
+    let diff = Date.now()-serverTime;
+    function timer(){
+        let d = new Date(Date.now()-diff);
+        M("#timer").innerText = d.toLocaleString();
+    };
+    timer();
+    setInterval(timer,1000);
+    //----------------------------
+
+    //login:
+    //=========================================================
+    function login(e){
+        e.preventDefault();
+        let usr = M("#usr").value;
+        let pwd = M("#pwd").value;
+
+        M("#usr").value = usr.replace(/ /gi,'');
+        M("#pwd").value = pwd.replace(/ /gi,'');
+
+        if(checkup(pwd)){
+            alert("\r\n========>LOGIN SUCCESS<========\r\n\r\n");
+        }
+
+            function checkup(keystr){
+                    let regex = [/.{8,}/g, /[A-Z]+/g, /[a-z]+/g, /[0-9]+/g, /[\W]+/g];
+                    for(var i=0; i<regex.length; i++){
+                        if(!regex[i].test(keystr)) break;
+                    }
+                    switch(i){
+                        case 0:
+                            alert("최소8자 이상이여야 함");
+                            break;
+                        case 1:
+                            alert("대문자는 최소1개가 포함되여야 함");
+                            break;
+                        case 2:
+                            alert("소문자는 최소1개가 포함되여야 함");
+                            break;
+                        case 3:
+                            alert("수자가 최소1개 포함되여야 함");
+                            break;
+                        case 4:
+                            alert("특수문자는 최소1개 포함되여야 함.")
+                            break;
+                    }
+                    return i===5;
+            }
+    }
+    //=========================================================
+
+    //피보나치 결과치를 요청하기,위에 myajax를 사용하면서.
+    let tid=0;
+    function fibonacciAjax(event){
+        clearTimeout(tid);
+        tid = setTimeout(()=>{
+            let data = {N:event.target.value};
+            myAjax("post","/fibonacci",data,(xhr)=>{
+                let r = xhr.responseText;
+                document.querySelector("#fibonacciV").value = r;
+            });
+        },500);
+    }
+
+    //--
+    //google custom search
+    function googlesearch(event){
+        event.preventDefault();
+        let key = "AIzaSyDE7k8lIGIteWbLs4ShuoBwYm1Ld3JyC_0";
+        let cx = "006302910569569867484:4derhzxxwny";
+        let searchkey = M("#searchValue").value;
+        let url = 'https://www.googleapis.com/customsearch/v1/siterestrict?key='+key+'&cx='+cx+'&q='+searchkey;
+        //handlebarsRender(jsonData);
+
+        if(searchkey.trim()==='') return;
+        event.target.disabled=true;
+        myAjax("get",url, {}, (xhr)=>{
+            event.target.disabled=false;
+            let r = JSON.parse(xhr.responseText);
+            handlebarsRender(r);
+        }); 
+        
+        
+    }
+    function searchEnter(event){ event.keyCode===13 && googlesearch(event); }
+
+    //--
+    //go to top
+    function gotoTop(e){
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+    }
+
+    document.addEventListener("scroll",(e)=>{
+            var pos = document.scrollingElement.scrollTop;    
+            if(pos>0){
+                M("#gotoTop").style.opacity = 1;
+                M("#gotoTop").style.visibility = 'visible';
+            }else{
+                M("#gotoTop").style.opacity = 0;
+                M("#gotoTop").style.visibility = 'collapse';
+            }
+    })
+
+</script>
+</html>

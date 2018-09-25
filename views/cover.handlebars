@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>https://absolute.tk</title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'></script>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.3.1/css/all.css'>
+
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+
+    <script src='https://unpkg.com/react@16/umd/react.development.js'></script>
+    <script src='https://unpkg.com/react-dom@16/umd/react-dom.development.js'></script>
+    <script src="/javascripts/display.js"></script>
+    <style>
+            .darknight{
+                position: fixed;
+                width:100%;
+                height:100%;
+                top: 0%;
+                z-index:20;
+                background:url(images/cover.jpg);
+                background-size:cover;
+                background-position: center;
+
+            }
+            .darknightCome{
+                top: 0%;
+            }
+            .darknightGone{
+                top:-100%;
+            }
+    </style>
+</head>
+<body>
+    <div class="darknight bg-light" style="transition:1s ease .3s"></div>
+    <div style="position:fixed;width:100%;height:100%;background:black; background-size:cover">
+        <!--- server time--->
+        <style scoped>
+            body{
+                    font-family: 'Bree Serif';
+                    font-weight:600!important;
+                    text-shadow:0px 0px 3px rgba(0,0,0,0.5)!important;
+            }
+            .enter{
+                position:absolute;
+                font-size:80px; 
+                color:white; 
+                right:10px; 
+                bottom:10px;
+                margin:10px;
+            }
+            a:hover{
+                text-decoration: none;
+            }
+            .white{
+                position:absolute;
+            }
+        </style>
+        <div id="clock"></div>
+        <span class="enter"><a href="/main" style="font-family:'Serif';">ENTER</a></span>
+        <span class="white"></span>
+        <span class="badge badge-danger badge-pill position-fixed" style="bottom:0;right:0;margin:15px" id="timer" data-timer={{timer}}></span>
+    </div>
+    
+</body>
+<script>
+    //like jquery's $(), but it's so simpble and it does not equal $() of jquery.
+    let M = (x)=>document.querySelector(x);
+
+    //pageing effect
+    //**************************************************** 
+            window.addEventListener("load",(e)=>{
+                e.preventDefault();
+                M(".darknight").classList.add("darknightGone");
+                //M(".darknight").classList.remove("darknightCome");
+            });
+
+            M("a").addEventListener("click",(e)=>{  
+                e.preventDefault();
+                M(".darknight").addEventListener("transitionend",(e)=>{
+                    window.location.href="/main";
+                })
+
+               // M(".darknight").classList.add("darknightCome");
+                M(".darknight").classList.remove("darknightGone");
+            })
+    //******************************************************
+
+    //server time:
+    //----------------------------
+    let serverTime = M("#timer").dataset.timer;
+    let diff = Date.now()-serverTime;
+    function timer(){
+        let d = new Date(Date.now()-diff);
+        M("#timer").innerText = d.toLocaleString();
+    };
+    timer();
+    setInterval(timer,1000);
+
+    //my Ajax method.
+    function myAjax(method="POST", url="", data={}, callback=(xhr)=>{}) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                callback(this);
+            }
+        };
+        method = method.toLowerCase();
+        xhr.open(method, url, true);
+        method==="post" && xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(method==="post"?JSON.stringify(data):null);
+    }
+
+
+    //------------------------------------------------------
+    //ServerTime Clock:
+    //------------------------------------------------------
+    //------------------------------------------------------
+    let cc = React.createElement;
+    let dialstyle = {
+        position:'absolute',
+        width:'300px',height:'300px',left:'50%',top:'50%',
+        transform:'translate(-50%,-50%)',
+        border:'13px solid blue',borderRadius:'50%',
+    }
+
+        let handStyle = {
+            position:'absolute',width:'150px',height:'5px',
+            border:'1px solid blue',borderRadius:'5px',
+            left:'50%',top:'50%',
+            transform:'translate(0%,-50%) rotate(-90deg)',
+            transformOrigin:'0% 50%'
+        }
+
+    //침판
+    class dial extends React.Component{
+        render(){
+            return cc('div',{style:dialstyle},this.props.children);
+        }
+    }
+
+            class centerPoint extends React.Component{
+                constructor(props){
+                    super();
+                    this.centerPointStyle = Object.assign({},dialstyle,{width:'15px',height:'15px',zIndex:10,background:'blue'});
+                }
+                render(){
+                    return cc('div', {style:this.centerPointStyle,onClick:()=>{ /* alert('ok') */ }}, this.props.children);
+                }
+            }
+
+        //시침
+        class hourhand extends React.Component{
+            constructor(props){
+                super();
+                this.customDate = props.date;
+                this.hourHandStyle = Object.assign({},handStyle,{
+                    width:'110px',height:'16px',background:'black',
+                    border:'3px solid blue'
+                });    
+            }
+            currentHour(){
+                let d = new Date(this.customDate);
+                let curSec = d.getHours()%12*60*60 + d.getMinutes()*60 + d.getSeconds();
+                let anglePerSec = 360 / (60*60*12);
+                let initHourHandAngle = anglePerSec * curSec;
+                //console.log(initHourHandAngle);
+                let su = new SuperElement("t");
+                let hourAni = su.keyframes(`
+                    0%{ transform:translate(0%,-50%) rotate(${initHourHandAngle-90}deg); }
+                    100%{ transform:translate(0%,-50%) rotate(${initHourHandAngle+360-90}deg); }
+                `);
+                this.hourHandStyle = Object.assign({},this.hourHandStyle,{animation:hourAni+'linear 43200s both infinite'})
+            }
+            render(){
+                this.currentHour();
+                return cc('div', {style:this.hourHandStyle}, this.props.children);
+            }
+        }
+
+        //분침
+        class minhand extends React.Component{
+            constructor(props){
+                super();
+                this.customDate = props.date;
+                this.minHandStyle = Object.assign({},handStyle,{
+                    width:'130px',height:'10px',background:'black',
+                    border:'3px solid blue'
+                });
+            }
+            currentMin(){
+                let d = new Date(this.customDate);
+                let curSec = d.getMinutes()*60 + d.getSeconds();
+                let anglePerSec = 360 / (60*60);
+                let initMinHandAngle = anglePerSec * curSec;
+                let su = new SuperElement("t");
+                let minAni = su.keyframes(`
+                    0%{ transform:translate(0%,-50%) rotate(${initMinHandAngle-90}deg); }
+                    100%{ transform:translate(0%,-50%) rotate(${initMinHandAngle+360-90}deg); }
+                `);
+                this.minHandStyle = Object.assign({},this.minHandStyle,{animation:minAni+'linear 3600s both infinite'})
+            }
+            render(){
+                this.currentMin();
+                return cc('div', {style:this.minHandStyle}, this.props.children);
+            }
+        }
+
+        //초침
+        class sechand extends React.Component{
+            constructor(props){
+                super();
+                this.customDate = props.date;
+                this.secHandStyle = Object.assign({},handStyle,{width:'128px',height:'2px',background:'blue'});
+            }
+            //,animation:secAni+' linear 60s both infinite'
+            currentSec(){
+                let d = new Date(this.customDate);
+                let curSec = d.getSeconds();
+                let anglePerSec = 360 / (60);
+                let initSecHandAngle = anglePerSec * curSec;
+                
+                let su = new SuperElement("t");
+                let secAni = su.keyframes(`
+                    0%{ transform:translate(0%,-50%) rotate(${initSecHandAngle-90}deg); }
+                    100%{ transform:translate(0%,-50%) rotate(${initSecHandAngle+360-90}deg); }
+                `);
+                this.secHandStyle = Object.assign({},this.secHandStyle,{animation:secAni+'linear 60s both infinite'})
+            }
+
+            render(){
+                this.currentSec();
+                return cc('div', {style:this.secHandStyle}, this.props.children);
+            }
+        }
+
+        let DateClock = new Date(Date.now()-diff);
+        ReactDOM.render(
+            cc(dial,null,cc(centerPoint),
+                cc(hourhand,{date:DateClock}),
+                cc(minhand,{date:DateClock}),
+                cc(sechand,{date:DateClock})
+            ),
+            document.querySelector("#clock")
+        );
+    //------------------------------------------------
+
+</script>
+</html>
