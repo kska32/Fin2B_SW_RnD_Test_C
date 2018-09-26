@@ -18,24 +18,22 @@
 
 .sideMenu{
     position:fixed;
-    top:0;
+    top:0px;
     width:300px;
     height:100%;
     background:white;
     z-index:10;
     padding: 20px;
     padding-top: 50px;
-
     left:-400px;
     visibility: collapse;
+    overflow:auto;
 }
 
 .sideMenuShow{
     left:0px;
     visibility: visible;
 }
-
-
 
 .closeSymbol{
     background:none;
