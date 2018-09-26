@@ -203,35 +203,36 @@
     //피보나치 결과치를 요청하기,위에 myajax를 사용하면서.
     let tid=0;
     function fibonacciAjax(event){
-        clearTimeout(tid);
-        tid = setTimeout(()=>{
-            let data = {N:event.target.value};
-            myAjax("post","/fibonacci",data,(xhr)=>{
-                let r = xhr.responseText;
-                document.querySelector("#fibonacciV").value = r;
-            });
-        },500);
+            clearTimeout(tid);
+            tid = setTimeout(()=>{
+                let data = {N:event.target.value};
+                myAjax("post","/fibonacci",data,(xhr)=>{
+                    let r = xhr.responseText;
+                    document.querySelector("#fibonacciV").value = r;
+                });
+            },500);
     }
 
     //--
     //google custom search
+    //api key는 기밀성 데이터기에 뒷단에서 처리해야 하면 좋을뜻
+    //그래서....
     function googlesearch(event){
-        event.preventDefault();
-        let key = "AIzaSyDE7k8lIGIteWbLs4ShuoBwYm1Ld3JyC_0";
-        let cx = "006302910569569867484:4derhzxxwny";
-        let searchkey = M("#searchValue").value;
-        let url = 'https://www.googleapis.com/customsearch/v1/siterestrict?key='+key+'&cx='+cx+'&q='+searchkey;
-        //handlebarsRender(jsonData);
-
-        if(searchkey.trim()==='') return;
-        event.target.disabled=true;
-        myAjax("get",url, {}, (xhr)=>{
-            event.target.disabled=false;
-            let r = JSON.parse(xhr.responseText);
-            handlebarsRender(r);
-        }); 
+            event.preventDefault();
+            let searchkey = M("#searchValue").value;
+            let url = "/googleSearch";
+            //handlebarsRender(jsonData);
+            
+            if(searchkey.trim()==='') return;
+            event.target.disabled=true;
+            myAjax("post", url, {searchkey}, (xhr)=>{
+                event.target.disabled=false;
+                let r = JSON.parse(xhr.responseText);
+                handlebarsRender(r);
+            }); 
     }
     
+    //퍼커스가 InputText안에 있을때 enter누른다면...
     function searchEnter(event){ event.keyCode===13 && googlesearch(event); }
 
     //--
@@ -243,6 +244,7 @@
         });
     }
 
+    //scrollbar이 제일 윗부분에 안있을때 Top버튼이 점차적으로 나타나게 하기.
     document.addEventListener("scroll",(e)=>{
             var pos = document.scrollingElement.scrollTop;    
             if(pos>0){
