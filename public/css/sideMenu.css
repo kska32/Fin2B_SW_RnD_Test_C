@@ -27,7 +27,8 @@
     padding-top: 50px;
     left:-400px;
     visibility: collapse;
-    overflow:auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .sideMenuShow{
@@ -37,12 +38,12 @@
 
 .closeSymbol{
     background:none;
-    color:white;
+    color:black;
     font-size:30px;
     border: 0;
-    right: -50px;
-    top: 50px;
+    right: 0px;
+    top: 0px;
     position:absolute;
     border-radius: 5px;
-    padding:0 10px;
+    padding:0 12px;
 }
