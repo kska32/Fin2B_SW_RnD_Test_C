@@ -43,7 +43,7 @@ app.post("/googleSearch",async(req,res,next)=>{
     let key = "AIzaSyDE7k8lIGIteWbLs4ShuoBwYm1Ld3JyC_0";
     let cx = "006302910569569867484:4derhzxxwny";
     let hostname = 'www.googleapis.com'; 
-    let path = '/customsearch/v1/siterestrict?key='+key+'&cx='+cx+'&q='+searchkey;
+    let path = '/customsearch/v1/siterestrict?key='+key+'&cx='+cx+'&q='+encodeURIComponent(searchkey);
 
     let result = await httpsRequest(hostname,path,"get");
     res.end(result);
