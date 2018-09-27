@@ -1,6 +1,12 @@
-
 function handlebarsRender(context){
         Handlebars.registerHelper('items', function(items, options) {
+            if(items===undefined){
+                return `
+                    <div class='searchResultsInside d-flex justify-content-center align-items-center searchResultsItem'">
+                        No Results
+                    <div>
+                `;
+            }
             var out = "<div class='searchResultsInside'>";
             for(var i=0, l=items.length; i<l; i++) {
                 let itemx = options.fn(items[i]).replace(/\n|<b>|<\/b>/gi,"");
@@ -19,8 +25,10 @@ function handlebarsRender(context){
                 <div class="displaylink" >{{{displayLink}}}</div>
                 <span class="snippet">{{{htmlSnippet}}}</span>
             {{/items}}
-            <button class='nextpage btn btn-success' onclick='nextPage(event,{{json queries}})'>NEXT PAGE</button>
+            ${context.items ? "<button class='nextpage btn btn-success' onclick='nextPage(event,{{json queries}})'>NEXT PAGE</button>" : ''}
         `;
+
+
 
         let template = Handlebars.compile(source);
         let html = template(context);
